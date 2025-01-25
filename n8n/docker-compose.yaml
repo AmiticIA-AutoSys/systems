@@ -1,0 +1,52 @@
+services:
+  # n8n service
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      # Base environment variables
+      WEBHOOK_URL: "https://n8n.talvez.site/"
+      N8N_HOST: "n8n.talvez.site"
+      N8N_PORT: 5678
+      NODE_ENV: "production"
+      N8N_TRUST_PROXY: "true"
+      N8N_BASIC_AUTH_ACTIVE: "true"                # Enable Basic Auth
+      N8N_BASIC_AUTH_USER: "ainbidev"              # Basic Auth Username
+      N8N_BASIC_AUTH_PASSWORD: "amiticia"          # Basic Auth Password
+      DB_TYPE: "postgresdb"                        # Use PostgreSQL
+      DB_POSTGRESDB_HOST: "postgres_n8n"               # PostgreSQL service name
+      DB_POSTGRESDB_PORT: 5432                     # PostgreSQL default port
+      DB_POSTGRESDB_DATABASE: "n8n"                # PostgreSQL database name
+      DB_POSTGRESDB_USER: "ainbidev"               # PostgreSQL username
+      DB_POSTGRESDB_PASSWORD: "amiticia"    # PostgreSQL password
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - n8n_network
+
+  # PostgreSQL service
+  postgres:
+    image: postgres:13
+    container_name: postgres_n8n
+    restart: always
+    environment:
+      POSTGRES_DB: "n8n"                           # PostgreSQL database name
+      POSTGRES_USER: "ainbidev"                    # PostgreSQL username
+      POSTGRES_PASSWORD: "amiticia"         # PostgreSQL password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - n8n_network
+
+# Define Docker network
+networks:
+  n8n_network:
+    driver: bridge
+
+# Define Docker volumes
+volumes:
+  postgres_data:
+  n8n_data:
