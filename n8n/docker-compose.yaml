@@ -1,7 +1,9 @@
 services:
   # n8n service
   n8n:
-    image: n8nio/n8n:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: n8n
     restart: always
     ports:
@@ -22,7 +24,7 @@ services:
       DB_POSTGRESDB_DATABASE: "n8n"                # PostgreSQL database name
       DB_POSTGRESDB_USER: "ainbidev"               # PostgreSQL username
       DB_POSTGRESDB_PASSWORD: "amiticia"    # PostgreSQL password
-      GENERIC_TIMEZONE="America/Sao_Paulo"
+      GENERIC_TIMEZONE: "America/Sao_Paulo"
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
