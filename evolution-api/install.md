@@ -23,3 +23,13 @@ More on the docs on [Environment Variables](https://doc.evolution-api.com/v2/pt/
 
 
 For while using clodflare argo-tunnel to my cheap domain evoapi.talvez.site
+
+
+### Notes
+
+If you change any enviorement variable the `.env` file you must delete the docker volumes otherwise it won't take effect. 
+Use `sudo docker volume ls` to check the volumes used by evolution then.
+
+```bash
+sudo docker volume rm evolution-api_evolution_instances evolution-api_evolution_redis evolution-api_pgadmin_data evolution-api_postgres_data
+```
