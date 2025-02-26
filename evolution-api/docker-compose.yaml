@@ -21,29 +21,27 @@ services:
     image: redis:7
     networks:
       - evolution-net
-    container_name: redis
+    container_name: redis-evolution
     command: >
       redis-server --port 6379 --appendonly yes
     volumes:
       - evolution_redis:/data
-    ports:
-      - 6379:6379
+    expose: # for clarity only accessible internally exposed, this docker network
+      - 6379
 
   postgres:
-    container_name: postgres
+    container_name: postgres-evolution
     image: postgres:15
     networks:
       - evolution-net
     command: ["postgres", "-c", "max_connections=1000"]
     restart: always
-    ports:
-      - 5432:5432
     environment:
       - POSTGRES_USER=ainbidev
       - POSTGRES_PASSWORD=admin
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    expose:
+    expose: # for clarity only accessible internally exposed, on this docker network
       - 5432
 
   pgadmin:
