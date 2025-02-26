@@ -3,7 +3,7 @@ services:
     image: chatwoot/chatwoot:v4.0.2-ce
     env_file: .env ## Change this file for customized env variables
     volumes:
-      - /data/storage:/app/storage
+      - chatwoot_data:/app/storage
     networks:
       - chatwoot-net    
 
@@ -13,7 +13,7 @@ services:
       - postgres
       - redis
     ports:
-      - '127.0.0.1:3000:3000'
+      - 3000:3000
     networks:
       - chatwoot-net    
     environment:
@@ -45,7 +45,7 @@ services:
     networks:
       - chatwoot-net        
     volumes:
-      - /data/postgres:/var/lib/postgresql/data
+      - chatwoot_postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=chatwoot
       - POSTGRES_USER=postgres      
@@ -62,10 +62,15 @@ services:
     command: ["sh", "-c", "redis-server --port 6379"]
     env_file: .env
     volumes:
-      - /data/redis:/data
+      - chatwoot_redis:/data
     expose:
       - 6379
 
+
+volumes:
+  chatwoot_redis:
+  chatwoot_postgres:
+  chatwoot_data:  
 
 networks:
   chatwoot-net:
