@@ -20,7 +20,8 @@ RUN npm install \
     # FireCrawl nodes
     n8n-nodes-firecrawl-v1 \
     # Allows users to create global constants and use them in all their workflows
-    n8n-nodes-globals
-
+    n8n-nodes-globals \
+    @devlikeapro/n8n-nodes-chatwoot
+    
 # Retorna ao usuário padrão do n8n
 USER node

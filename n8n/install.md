@@ -5,7 +5,7 @@ Just docker-compose build then up.
 PostgreSQL is installed by default but not redis.
 
 ```bash
-sudo docker build # custom image by Dockerfile with n8n community nodes
+sudo docker build . # custom image by Dockerfile with n8n community nodes
 sudo docker compose up -d
 ```
 
