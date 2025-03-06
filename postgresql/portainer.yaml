@@ -7,22 +7,30 @@ services:
     volumes:
       - postgre_sql:/var/lib/postgresql/data
     networks:
-      - portainer_network_public      
+      - portainer_network_public
     ports:
       - 5432:5432
+    restart: unless-stopped
 
-  pgadmin:    
+  pgadmin:
     image: dpage/pgadmin4:9.1
     environment:
       PGADMIN_DEFAULT_EMAIL: ainbidev@proton.me
       PGADMIN_DEFAULT_PASSWORD: 4!nb1deV
       PGADMIN_LISTEN_PORT: 4000
+      # Reverse proxy / Cloudflare tunnel compatibility settings
+      PGADMIN_CONFIG_PROXY_X_FORWARDED_PROTO: "True"
+      PGADMIN_CONFIG_PROXY_X_FORWARDED_HOST: "True"
+      PGADMIN_CONFIG_PROXY_X_FORWARDED_FOR_COUNT: "1"
+      # Temporarily disable enhanced cookie protection if persistent issues occur (try True first)
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
     volumes:
       - postgre_sql_pgadmin:/var/lib/pgadmin
     networks:
       - portainer_network_public
     ports:
       - 4000:4000
+    restart: unless-stopped
 
 volumes:
   postgre_sql:
