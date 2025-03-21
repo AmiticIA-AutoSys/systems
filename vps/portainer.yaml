@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   agent:
-    image: portainer/agent:2.21.4
+    image: portainer/agent:2.27.2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
@@ -14,7 +14,7 @@ services:
         constraints: [node.platform.os == linux]
 
   portainer:
-    image: portainer/portainer-ce:2.21.4
+    image: portainer/portainer-ce:2.27.2
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
