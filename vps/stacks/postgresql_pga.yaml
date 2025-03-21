@@ -13,7 +13,7 @@ services:
     networks:
       - network_public
     restart: unless-stopped
-    # dont expose port 5432 on traefik since n8n, chatwoot, etc use it
+    # dont expose port 5432 through traefik since n8n, chatwoot, etc use it
     # labels: 
     #   - "traefik.enable=true"
     #   - "traefik.docker.network=network_public"
