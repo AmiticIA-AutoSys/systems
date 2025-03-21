@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: ainbidev
+      POSTGRES_PASSWORD: 4!nb1deV
+    volumes:
+      - postgre_sql:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - network_public
+    restart: unless-stopped
+    # dont expose port 5432 on traefik since n8n, chatwoot, etc use it
+    # labels: 
+    #   - "traefik.enable=true"
+    #   - "traefik.docker.network=network_public"
+    #   - "traefik.tcp.routers.postgres.rule=HostSNI(`postgres.pfklabs.online`)"
+    #   - "traefik.tcp.routers.postgres.entrypoints=postgres-tcp"
+    #   - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
+
+
+  pgadmin:
+    image: dpage/pgadmin4:9.1
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ainbidev@proton.me
+      PGADMIN_DEFAULT_PASSWORD: 4!nb1deV
+      PGADMIN_LISTEN_PORT: 4000
+    volumes:
+      - postgre_sql_pgadmin:/var/lib/pgadmin
+    networks:
+      - network_public
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=network_public"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.pfklabs.online`)"
+      - "traefik.http.routers.pgadmin.entrypoints=websecure"      
+      - "traefik.http.routers.pgadmin.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.pgadmin.service=pgadmin"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=4000"
+
+volumes:
+  postgre_sql:
+  postgre_sql_pgadmin:
+
+networks:
+  network_public:
+    external: true
+    name: network_public
