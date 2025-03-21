@@ -1,0 +1,48 @@
+services:
+  # n8n service
+  n8n:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: n8n
+    restart: always
+    environment:
+      # Base environment variables
+      WEBHOOK_URL: "https://auto.pfklabs.online/"
+      N8N_HOST: "auto.pfklabs.online"
+      N8N_PORT: 5678
+      NODE_ENV: "production"
+      N8N_TRUST_PROXY: "true"
+      N8N_BASIC_AUTH_ACTIVE: "true"                # Enable Basic Auth
+      N8N_BASIC_AUTH_USER: "ainbidev"              # Basic Auth Username
+      N8N_BASIC_AUTH_PASSWORD: "4!nb1deV"          # Basic Auth Password
+      DB_TYPE: "postgresdb"                        # Use PostgreSQL
+      DB_POSTGRESDB_HOST: "postgresql"             # PostgreSQL service name
+      DB_POSTGRESDB_PORT: 5432                     # PostgreSQL default port
+      # Database n8n
+      # must be created with pgadmin before installing this stack
+      DB_POSTGRESDB_DATABASE: "n8n"                # PostgreSQL database name
+      DB_POSTGRESDB_USER: "ainbidev"               # PostgreSQL username
+      DB_POSTGRESDB_PASSWORD: "4!nb1deV"    # PostgreSQL password
+      GENERIC_TIMEZONE: "America/Sao_Paulo"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - public_network
+    labels: # auto instead of n8n, only traefik can access its port 5678
+      - "traefik.enable=true"
+      - "traefik.docker.network=network_public"
+      - "traefik.http.routers.auto.rule=Host(`auto.pfklabs.online`)"
+      - "traefik.http.routers.auto.entrypoints=websecure"      
+      - "traefik.http.routers.auto.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.auto.service=auto"
+      - "traefik.http.services.auto.loadbalancer.server.port=5678"
+
+networks:
+  network_public:
+    external: true
+    name: network_public
+
+# Define Docker volumes
+volumes:
+  n8n_data:
