@@ -15,7 +15,7 @@ Set up docker swarm and public network
 
 ```bash
 docker swarm init
-docker network create --driver=overlay network_public
+docker network create --driver=overlay --attachable network_public
 ```
 
 Deploy traefik stack.
@@ -23,4 +23,11 @@ Copy from traefik/docker-stack-deploy.yaml (using nautilus) to vps server
 
 ```bash
 docker stack deploy --prune --resolve-image always -c docker-stack-deploy.yaml traefik
+```
+
+Deploy portainer stack [official docs](https://docs.portainer.io/start/install-ce/server/swarm/linux)
+Copy from portainer/docker-stack-deploy.yaml (using nautilus) to vps server 
+
+```bash
+docker stack deploy --prune --resolve-image always -c docker-stack-deploy.yaml portainer
 ```
