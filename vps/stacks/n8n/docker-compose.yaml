@@ -2,8 +2,6 @@ services:
   # n8n service
   n8n:
     image: eusoubrasileiro/n8n:1.0 # use dockerhub image for local Dockerfile built
-    container_name: n8n
-    restart: always
     environment:  
       # Base environment variables
       WEBHOOK_URL: "https://auto.pfklabs.online/"
@@ -26,7 +24,7 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
-      - public_network
+      - network_public
     labels: # auto instead of n8n, only traefik can access its port 5678
       - "traefik.enable=true"
       - "traefik.docker.network=network_public"
