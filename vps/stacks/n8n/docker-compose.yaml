@@ -1,12 +1,10 @@
 services:
   # n8n service
   n8n:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: eusoubrasileiro/n8n:1.0 # use dockerhub image for local Dockerfile built
     container_name: n8n
     restart: always
-    environment:
+    environment:  
       # Base environment variables
       WEBHOOK_URL: "https://auto.pfklabs.online/"
       N8N_HOST: "auto.pfklabs.online"

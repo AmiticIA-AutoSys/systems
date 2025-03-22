@@ -1,4 +1,4 @@
-FROM n8nio/n8n:latest
+FROM n8nio/n8n:1.84.0
 
 # Troca para o usuário root para instalar pacotes
 USER root
@@ -25,3 +25,6 @@ RUN npm install \
     
 # Retorna ao usuário padrão do n8n
 USER node
+
+
+

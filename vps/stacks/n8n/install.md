@@ -1,10 +1,18 @@
+### Build
+
+```bash
+sudo su # only works pushing with roo
+docker login -u eusoubrasileiro
+# use dockerhub access token
+docker build . -t eusoubrasileiro/n8n
+# modify the tag:1.0 for whatever value you see fit
+docker tag eusoubrasileiro/n8n eusoubrasileiro/n8n:1.0
+docker push eusoubrasileiro/n8n:1.0
+```
+
 ### Install
 
-Use portainer *Repository*
-
-Username: AmiticIA-AutoSys
-Personal Access Token: ... 
-Repository URL: https://github.com/AmiticIA-AutoSys/systems/vps/stacks/n8n
+Use portainer 
 
 ### Community Nodes
 
@@ -16,6 +24,3 @@ On the `npm Package Name` set bellow then press Install
 - n8n-nodes-vtiger-crm 
 - n8n-nodes-evolution-api 
 - ... etc 
-
-
-
