@@ -12,7 +12,10 @@ docker push eusoubrasileiro/n8n:1.0
 
 ### Install
 
-Use portainer 
+- 1. Create the database "n8n" on postgresql service using pgadmin.
+- 2. Use portainer and load the *.yaml
+
+Todo: take a look on astraweb for superior implementation with workers and splitting editor from the rest. 
 
 ### Community Nodes
 
