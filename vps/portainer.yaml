@@ -6,6 +6,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - /:/host  # Add this line to mount the host root
     networks:
       - network_public
     deploy:
@@ -15,9 +16,8 @@ services:
 
   portainer:
     image: portainer/portainer-ce:2.27.2
-    command: -H unix:///var/run/docker.sock
+    command: -H tcp://tasks.agent:9001 --tlsskipverify  # Use Portainer Agent for communication
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
     networks:
       - network_public

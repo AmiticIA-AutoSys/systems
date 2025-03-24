@@ -1,7 +1,7 @@
 ### Vps Deploy
 
 ```bash
-sudo apt-get update ; apt-get install -y apparmor-utils
+sudo apt-get update
 hostnamectl set-hostname manager1
 ```
 At /etc/hosts replace `localhost` to `manager1`
@@ -22,12 +22,12 @@ Deploy traefik stack.
 Copy from traefik/docker-stack-deploy.yaml (using nautilus) to vps server 
 
 ```bash
-docker stack deploy --prune --resolve-image always -c docker-stack-deploy.yaml traefik
+docker stack deploy --prune --resolve-image always -c traefik.yaml traefik
 ```
 
 Deploy portainer stack [official docs](https://docs.portainer.io/start/install-ce/server/swarm/linux)
 Copy from portainer/docker-stack-deploy.yaml (using nautilus) to vps server 
 
 ```bash
-docker stack deploy --prune --resolve-image always -c docker-stack-deploy.yaml portainer
+docker stack deploy --prune --resolve-image always -c portainer.yaml portainer
 ```
