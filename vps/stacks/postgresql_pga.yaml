@@ -32,15 +32,18 @@ services:
       - postgre_sql_pgadmin:/var/lib/pgadmin
     networks:
       - network_public
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=network_public"
+        - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.pfklabs.online`)"
+        - "traefik.http.routers.pgadmin.entrypoints=websecure"
+        - "traefik.http.routers.pgadmin.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.pgadmin.service=pgadmin"
+        - "traefik.http.services.pgadmin.loadbalancer.server.port=4000"
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=network_public"
-      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.pfklabs.online`)"
-      - "traefik.http.routers.pgadmin.entrypoints=websecure"      
-      - "traefik.http.routers.pgadmin.tls.certresolver=letsencryptresolver"
-      - "traefik.http.routers.pgadmin.service=pgadmin"
-      - "traefik.http.services.pgadmin.loadbalancer.server.port=4000"
 
 volumes:
   postgre_sql:
