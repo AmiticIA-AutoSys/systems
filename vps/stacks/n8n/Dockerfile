@@ -11,6 +11,10 @@ WORKDIR /home/node/.n8n/nodes
 
 # Instala os pacotes npm necessários
 RUN npm install \
+    # some npm standards 
+    moment \
+    lodash \
+    axios \
     n8n-nodes-vtiger-crm \
     n8n-nodes-evolution-api \
     # Search for details of a Brazilian company using a CNPJ.
@@ -21,7 +25,7 @@ RUN npm install \
     n8n-nodes-firecrawl-v1 \
     # Allows users to create global constants and use them in all their workflows
     n8n-nodes-globals \
-    @devlikeapro/n8n-nodes-chatwoot
+    @devlikeapro/n8n-nodes-chatwoot 
     
 # Retorna ao usuário padrão do n8n
 USER node

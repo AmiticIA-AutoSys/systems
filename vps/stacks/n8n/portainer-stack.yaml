@@ -26,7 +26,8 @@ services:
       DB_POSTGRESDB_DATABASE: "n8n"                # PostgreSQL database name
       DB_POSTGRESDB_USER: "ainbidev"               # PostgreSQL username
       DB_POSTGRESDB_PASSWORD: "4!nb1deV"    # PostgreSQL password
-      NODE_FUNCTION_ALLOW_EXTERNAL: "moment,lodash"
+      NODE_FUNCTION_ALLOW_EXTERNAL : "*"
+      NODE_FUNCTION_ALLOW_BUILTIN : "*"
       EXECUTIONS_DATA_PRUNE: "true"
       EXECUTIONS_DATA_MAX_AGE: 336 # 2 semanas
       # Timezone
