@@ -4,7 +4,7 @@ services:
     image: eusoubrasileiro/n8n:1.0 # use dockerhub image for local Dockerfile built
     environment:  
       # Base environment variables
-      WEBHOOK_URL: "https://webhook.auto.pfklabs.online/"
+      WEBHOOK_URL: "https://auto.pfklabs.online/"
       N8N_EDITOR_BASE_URL: "https://auto.pfklabs.online/"
       N8N_HOST: "auto.pfklabs.online"
       N8N_PORT: 5678
