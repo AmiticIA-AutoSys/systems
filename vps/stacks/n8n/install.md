@@ -12,8 +12,17 @@ docker push eusoubrasileiro/n8n:1.0
 
 ### Install
 
-- 1. Create the database "n8n" on postgresql service using pgadmin.
-- 2. Use portainer and load the *.yaml
+##### 1. Install Redis 
+
+For RAM caching (astraweb n8n workers model)
+
+> Distributed Processing Architecture: Redis serves as the message broker in a multi-instance setup, where one main n8n instance handles triggers and webhook calls while multiple worker instances perform the actual workflow executions.
+> Horizontal Scaling: This architecture allows you to scale up by adding more workers or scale down by removing them as your workload demands change.
+> Improved Throughput: n8n can handle up to 220 workflow executions per second on a single instance, but with Redis-enabled queue mode, you can significantly increase this capacity by adding more worker instances.
+> Process Flow Optimization: The main instance passes execution IDs to Redis, which maintains the queue of pending executions and allows workers to pick them up efficiently.
+
+##### 2. Create the database "n8n" on postgresql service using pgadmin.
+##### 3. Use portainer and load the *.yaml
 
 Todo: take a look on astraweb for superior implementation with workers and splitting editor from the rest. 
 
