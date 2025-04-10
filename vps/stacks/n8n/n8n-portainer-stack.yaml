@@ -1,7 +1,7 @@
 services:
   # n8n service
   n8n:
-    image: eusoubrasileiro/n8n:1.0 # use dockerhub image for local Dockerfile built
+    image: eusoubrasileiro/n8n:1.2 # use dockerhub image for local Dockerfile built
     environment:  
       # Base environment variables
       WEBHOOK_URL: "https://auto.pfklabs.online/"
@@ -67,7 +67,7 @@ services:
         - "traefik.http.services.auto.loadbalancer.passHostHeader=1"
 
   n8n_worker:
-    image: eusoubrasileiro/n8n:1.0 # use dockerhub image for local Dockerfile built
+    image: eusoubrasileiro/n8n:1.2 # use dockerhub image for local Dockerfile built
     command: worker --concurrency=10
     environment:  
       # Base environment variables

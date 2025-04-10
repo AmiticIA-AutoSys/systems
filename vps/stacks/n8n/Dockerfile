@@ -26,6 +26,8 @@ RUN npm install \
     # Allows users to create global constants and use them in all their workflows
     n8n-nodes-globals \
     @devlikeapro/n8n-nodes-chatwoot 
+
+RUN npm install n8n-nodes-auvoapi
     
 # Retorna ao usuário padrão do n8n
 USER node
