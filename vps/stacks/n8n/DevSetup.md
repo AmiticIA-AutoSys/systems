@@ -83,8 +83,7 @@ n8n start
 
 3. Access the `n8n` container as **root**, then run:
    ```bash
-	 cd ~/.n8n/custom
-	 npm init -y # if not a package.json yet here... 
+	 cd ~/.n8n/nodes	 
 	 npm install your-package.tgz
    ```
 
