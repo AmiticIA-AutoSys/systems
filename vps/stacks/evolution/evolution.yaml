@@ -1,0 +1,67 @@
+services:
+  api:    
+    container_name: evolution_api
+    image: atendai/evolution-api:v2.2.1
+    networks:
+      - network_public    
+    volumes:
+      - evolution_instances:/evolution/instances
+    environment:
+      - SERVER_URL=https://evoapi.pfklabs.online
+      - DEL_INSTANCE=false
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://ainbidev:4!nb1deV@postgresql:5432/evolution
+      - DATABASE_CONNECTION_CLIENT_NAME=AmiticIA_PostgreSQL
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_CHATS=true
+      - DATABASE_SAVE_DATA_LABELS=true
+      - DATABASE_SAVE_DATA_HISTORIC=true
+      - RABBITMQ_ENABLED=false
+      - RABBITMQ_URI=amqp://admin:admin@rabbitmq:5672/default
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://redis:6379/1
+      - CACHE_REDIS_PREFIX_KEY=evolution
+      - CACHE_REDIS_SAVE_INSTANCES=false
+      - CACHE_LOCAL_ENABLED=false
+      - S3_ENABLED=true
+      - S3_ACCESS_KEY=
+      - S3_SECRET_KEY=
+      - S3_BUCKET=evolution
+      - S3_PORT=443
+      - S3_ENDPOINT=files.site.com
+      - S3_USE_SSL=true
+      - AUTHENTICATION_API_KEY=429683C4C977415CAAFCCE10F7D57E11      
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=network_public"
+        - "traefik.http.routers.evolution.rule=Host(`evoapi.pfklabs.online`)"
+        - "traefik.http.routers.evolution.entrypoints=websecure"
+        - "traefik.http.routers.evolution.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.evolution.service=evolution"
+        - "traefik.http.services.evolution.loadbalancer.server.port=8080"
+    restart: unless-stopped
+
+
+volumes:
+  evolution_instances:
+
+networks:
+  network_public:
+    external: true
+    name: network_public
+
+
