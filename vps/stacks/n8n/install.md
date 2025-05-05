@@ -1,15 +1,3 @@
-### Build Dockerfile
-
-```bash
-sudo su # only works pushing with roo
-docker login -u eusoubrasileiro
-# use dockerhub access token
-docker build . -t eusoubrasileiro/n8n
-# modify the tag:1.0 for whatever value you see fit
-docker tag eusoubrasileiro/n8n eusoubrasileiro/n8n:1.0
-docker push eusoubrasileiro/n8n:1.0
-```
-
 ### Install
 
 ##### 1. Install Redis 
@@ -28,11 +16,49 @@ Todo: take a look on astraweb for superior implementation with workers and split
 
 ### Community Nodes
 
-Altough the nodes were installed on the custom built docker image they also must be installed on the n8n interface.
+#### For a fresh install
 
-Go to Settings->Community Nodes->Install
-On the `npm Package Name` set bellow then press Install
+Use the Portainer-> Volumes interface. On the `n8n_n8n_data` upload the custom nodes *.tgz files to the nodes folder. 
+Then run bellow to install everything you need then refresh (reboot containers) the n8n stack.
 
-- n8n-nodes-vtiger-crm 
-- n8n-nodes-evolution-api 
-- ... etc 
+```bash
+# npm package directory for everything n8n loads
+mkdir -p /home/node/.n8n/nodes
+cd /home/node/.n8n/nodes
+
+# Install node packages for javascript **Code Node**
+# and install node packages of n8n **Custom Nodes** developed by me
+# For n8n everything is a node package THERE IS NO DIFFERENCE!
+# Note: never install on /home/node/.n8n/custom that's for development only
+# would work why mixing development with production? don't mess with the things!
+npm install \
+    # some npm standards     
+    # date and time library
+    moment \ 
+    # utility library
+    lodash \
+    # promise based HTTP client 
+    axios \
+    # chatwoot node
+    @devlikeapro/n8n-nodes-chatwoot \    
+    # n8n nodes community nodes
+    n8n-nodes-vtiger-crm \
+    n8n-nodes-evolution-api \
+    # Search for details of a Brazilian company using a CNPJ.
+    n8n-nodes-cnpj \
+    # Complete implementation of ElevenLabs AI voice generation
+    n8n-nodes-elevenlabs \
+    # FireCrawl nodes
+    n8n-nodes-firecrawl-v1 \
+    # Allows users to create global constants and use them in all their workflows
+    n8n-nodes-globals \
+    # Auvo API
+    ./n8n-nodes-auvoapi-*.tgz \    
+    # Vtigerx
+    ./n8n-nodes-vtigerx-*.tgz 
+```
+
+#### Not fresh install 
+
+Use the Portainer-> Volumes interface. On the `n8n_n8n_data` upload the custom nodes *.tgz and run npm.
+Then reboot (Refresh) the stack and DONE.
