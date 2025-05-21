@@ -25,3 +25,6 @@ services:
     image: manager-node:5000/vtiger65:1.0
 ...
 ```
+
+(If you never used buildx before: `docker buildx create --use` once an Docker will remember.)
+
