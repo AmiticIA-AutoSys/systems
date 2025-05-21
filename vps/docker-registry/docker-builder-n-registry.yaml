@@ -1,0 +1,50 @@
+services:
+  registry:
+    image: registry:2           # upstream Distribution project
+    restart: unless-stopped
+    volumes:
+      - regdata:/var/lib/registry
+    networks:
+      - network_public
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager      
+      # ports:
+      #   - 5000:5000 only inside the vps; no need to expose on the internet
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1024M
+
+  buildkitd:
+    image: moby/buildkit:latest # official BuildKit daemon
+    command: ["buildkitd", "--addr", "tcp://0.0.0.0:1234"]
+    privileged: true            # BuildKit needs additional kernel features
+    ports:
+      - "1234:1234"               # gRPC endpoint that the build client will talk to
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # so BuildKit can load/push images
+      - buildkit-cache:/var/lib/buildkit
+    networks:
+      - network_public
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager      
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1024M     
+
+volumes:
+  regdata:
+  buildkit-cache:
+
+networks:
+  network_public:
+    external: true
