@@ -9,12 +9,30 @@ The images can be build on any machine and pushed to this registry.
 
 For build and pushing image to local registry `vtiger65:1.0` (version 1.0)
 
+##### Register the remote builder 
+
+```
+docker buildx create --name vtiger-builder \
+  --driver remote \
+  tcp://server.pfklabs.online:1234   
+```
+
+Then set to use it 
+
+```bash
+docker buildx use vtiger-builder
+```
+
+##### Build on the remote builder and push to the remote register
+
 ```bash
 docker buildx build \
-   --builder tcp://server.pfklabs.online:1234 \
-   --tag server.pfklabs.online:5000/vtiger65:1.0 \
-   --push .
+  --builder vtiger-builder \
+  --tag server.pfklabs.online:5000/vtiger65:1.0 \
+  --push .
 ```
+
+##### Using on docker-compose 
 
 Then on docker-compose.yaml we can use the image.
 And Portainer will fetch it from the server directly. 
@@ -26,5 +44,7 @@ services:
 ...
 ```
 
-(If you never used buildx before: `docker buildx create --use` once an Docker will remember.)
+
+
+
 

@@ -20,8 +20,10 @@ services:
           memory: 1024M
 
   buildkitd:
-    image: moby/buildkit:latest # official BuildKit daemon
-    command: ["buildkitd", "--addr", "tcp://0.0.0.0:1234"]
+    image: moby/buildkit:buildx-stable-1 # official BuildKit daemon
+    command:
+    - --addr
+    - tcp://0.0.0.0:1234
     privileged: true            # BuildKit needs additional kernel features
     ports:
       - "1234:1234"               # gRPC endpoint that the build client will talk to
