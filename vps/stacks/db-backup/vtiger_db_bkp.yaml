@@ -17,7 +17,7 @@ services:
       - DB_FILESYSTEM_PATH=/backup/vtiger
       - DEFAULT_COMPRESSION=BZ2
       - TZ=America/Sao_Paulo
-      - DEFAULT_BACKUP_BEGIN="00 00 * * *" # 00 = 00:00 midnight but docker image is GMT so -3 hours so 9pm     
+      - DEFAULT_BACKUP_BEGIN="00 00 * * *" # 00 = 00:00 midnight  
       - DEFAULT_BACKUP_INTERVAL=1440    # 1440 minutes = 24 hours
       # Blackout period - backups are not allowed between 8:45am and 9:00am
       - DEFAULT_BACKUP_BLACKOUT_BEGIN="0545"    # 5 hours and 45 minutes
