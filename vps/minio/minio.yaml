@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  minio:
+    image: minio/minio:latest          # pin a fixed tag in prod
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      # ── GLOBAL CORS ────────────────────────────────
+      # Comma-separated list of origins that MinIO will echo in
+      #   Access-Control-Allow-Origin.  "*" = allow any browser origin.
+      # You can restrict this to "https://app.example.com" etc.
+      # for my React app
+      MINIO_API_CORS_ALLOW_ORIGIN: "*"
+      # (MinIO derives the allowed methods/headers automatically)
+      # ───────────────────────────────────────────────      
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Web console
+    healthcheck:                       # <-- NEW
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # one-shot “init” container that waits a few seconds,
+  # then uses `mc` (MinIO Client) to create + expose the bucket
+  # setting the bucket to public read-only (download)
+  create-bucket:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy     # <-- NEW
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    entrypoint: >
+      /bin/sh -c "
+        until mc alias set myminio http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}; do
+          echo 'Waiting for MinIO to be ready…';
+          sleep 2;
+        done &&
+        mc mb -p myminio/anm || true &&
+        # public read-only (download); use 'public' for read+write, or 'none' to lock it back down later
+        mc anonymous set download myminio/anm && 
+        echo 'Bucket anm created and set to public (download)'"
+
+volumes:
+  minio-data:
